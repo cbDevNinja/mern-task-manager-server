@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://mern-task-app.onrender.com'],
+  origin: ['http://localhost:3000', 'https://mern-task-cbdevapp.onrender.com'],
 }));
 app.use(json());
 
