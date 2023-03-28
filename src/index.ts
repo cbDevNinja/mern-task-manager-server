@@ -1,16 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import { json } from 'body-parser';
-import { connectDB } from './db/mongoose';
-import dotenv from 'dotenv';
 import Task from './models/Task';
 import { MongoError } from 'mongodb';
 
-dotenv.config();
+const dotenv = require('dotenv').config();
+const connectDB =require('./db/mongoose');
 
 const app = express();
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://mern-task-cbdevapp.onrender.com'],
+  origin: ['http://localhost:3000', 'https://mern-task-cbdevapp.onrender.com', 'https://mern-task-cbdevapp-api.onrender.com'],
 }));
 app.use(json());
 
@@ -93,17 +93,18 @@ app.post('/api/tasks', (req, res) => {
 
 
 
-connectDB()
-  .then(() => {
-    console.log('Connected to MongoDB');
+const PORT = process.env.PORT || 3001;
 
-    // Start the server
-    const port = process.env.PORT || 3001;
-    console.log(process.env.PORT)
-    app.listen(port, () => {
-      console.log(`Server listening on port ${port}`);
+
+const startServer = async () => { 
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+startServer();
